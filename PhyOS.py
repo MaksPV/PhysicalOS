@@ -1,4 +1,29 @@
 confg = ["0", "1", "11", "111", "1111", "11111"]
+version = 2.03
+
+#Updater
+import requests
+def update():
+	try:
+		upd=requests.get('https://raw.githubusercontent.com/MaksPV/PhysicalOS/master/last_version.txt')
+		if float(upd.text) > version:
+			print("Найдено обновление\n" + upd.text + "\nОбновить?\n1 - Да, 2 - Нет")
+			update_menu = input()
+			if update_menu == confg[1]:
+				upd_phyos=requests.get('https://raw.githubusercontent.com/MaksPV/PhysicalOS/master/PhyOS.py')
+				f = open("PhyOS.py", "wb")
+				f.write(upd_phyos.content)
+				f.close()
+		elif float(upd.text) == version: print("Установлена последняя версия, вы прекрасны")
+		elif float(upd.text) < version: print("Не хочешь попать в команду PhysicalOS?")
+		else: print("Ошибка, файл обновлений не найден")
+#	print(send.text)
+#file = open('bdseo.html','w') #создаем файл для записи результатов
+#file.write(send.text) #записываем результат
+#file.close() #закрываем файл
+#Updater
+	except BaseException:
+		print("Нет интернета, попробуйте позже")
 
 #Клавиатура
 def keyboard_chose(text,a1,a2,a3,a4,b1,b2,b3,b4,c1,c2,c3,c4,d1,d2,d3,d4,e1,e2,e3,e4,f1,f2,f3,f4,g1,g2,g3,g4,h1,h2,h3,h4):
@@ -293,6 +318,8 @@ if not os.path.isdir("files"):
 
 #------------------------------------------#
 print("PhysicalOS")
+
+update()
 
 print("\nВведите 1 для помощи")
 while True:
