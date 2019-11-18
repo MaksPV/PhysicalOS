@@ -1,20 +1,22 @@
 confg = ["0", "1", "11", "111", "1111", "11111"]
-version = 2.031
+version = 2.032
 
 #Updater
 import requests
 def update():
+	print("\nПроверка обновлений")
 	try:
 		upd=requests.get('https://raw.githubusercontent.com/MaksPV/PhysicalOS/master/last_version.txt')
 		upd_vers = float(upd.text[0:6])
 		if upd_vers > version:
 			print("Найдено обновление\n" + upd.text[0:6] + "\nИзменения:\n" + upd.text[7:] +"\nОбновить?\n1 - Да, 2 - Нет")
-			update_menu = input()
+			update_menu = input("update@: ")
 			if update_menu == confg[1]:
 				upd_phyos=requests.get('https://raw.githubusercontent.com/MaksPV/PhysicalOS/master/PhyOS.py')
 				f = open("PhyOS.py", "wb")
 				f.write(upd_phyos.content)
 				f.close()
+				return "exit"
 		elif upd_vers == version: print("Установлена последняя версия, вы прекрасны")
 		elif upd_vers < version: print("Не хочешь попасть в команду PhysicalOS?")
 		else: print("Ошибка, файл обновлений не найден")
@@ -316,7 +318,9 @@ if not os.path.isdir("files"):
 #------------------------------------------#
 print("PhysicalOS")
 
-update()
+if update() == "exit":
+	print("Перезагрузка")
+	exit()
 
 print("\nВведите 1 для помощи")
 while True:
